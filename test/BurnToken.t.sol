@@ -9,24 +9,24 @@ contract BurnTokenTest is Test {
     address admin = address(1);
     address user1 = address(2);
     address user2 = address(3);
-    uint conversion = (10 ** 18);
+    uint256 conversion = (10 ** 18);
 
     function setUp() public {
         token = new BurnToken(admin);
     }
 
     function testInitialBalance() public view {
-        uint balance = token.balanceOf(admin);
+        uint256 balance = token.balanceOf(admin);
         assertGt(balance, 0);
     }
 
     function testTransfer() public {
-        uint initialAdminBalance = token.balanceOf(admin);
+        uint256 initialAdminBalance = token.balanceOf(admin);
         vm.prank(admin);
         token.transfer(user1, 10);
-        uint user1Balance = token.balanceOf(user1);
-        uint adminBalance = token.balanceOf(admin);
-        uint mappingAdminBalance = token.burnedPerAddress(admin);
+        uint256 user1Balance = token.balanceOf(user1);
+        uint256 adminBalance = token.balanceOf(admin);
+        uint256 mappingAdminBalance = token.burnedPerAddress(admin);
 
         assertEq(initialAdminBalance, 1000 * conversion);
         assertEq(user1Balance, 8 * conversion);
@@ -43,8 +43,8 @@ contract BurnTokenTest is Test {
 
         vm.prank(admin);
         token.transferFrom(user1, user2, 10);
-        uint mappingUserBalance = token.burnedPerAddress(user1);
-        uint user2Balance = token.balanceOf(user2);
+        uint256 mappingUserBalance = token.burnedPerAddress(user1);
+        uint256 user2Balance = token.balanceOf(user2);
         assertEq(user2Balance, 8 * conversion);
         assertEq(mappingUserBalance, 2 * conversion);
     }
